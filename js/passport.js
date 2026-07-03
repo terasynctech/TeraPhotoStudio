@@ -38,9 +38,9 @@ upload.addEventListener("change", function () {
 
 });
 
-// ===============================
-// Generate Passport Sheet
-// ===============================
+// ===========================
+// Generate 8 Passport Photos
+// ===========================
 
 document.getElementById("generateBtn").addEventListener("click", function () {
 
@@ -67,9 +67,9 @@ document.getElementById("generateBtn").addEventListener("click", function () {
 
 });
 
-// ===============================
+// ===========================
 // Print
-// ===============================
+// ===========================
 
 document.getElementById("printBtn").addEventListener("click", function () {
 
