@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TeraPhotoStudio - Passport Photo</title>
+
+<link rel="stylesheet" href="css/passport.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Left Sidebar -->
+
+    <div class="sidebar">
+
+        <h2>TeraPhotoStudio</h2>
+
+        <ul>
+
+            <li class="active">📷 Passport Photo</li>
+            <li>🛂 Visa Photo</li>
+            <li>🖼 Stamp Size</li>
+            <li>💳 PVC Card</li>
+            <li>🪪 ID Card</li>
+            <li>⚙ Settings</li>
+
+        </ul>
+
+    </div>
+
+    <!-- Main Area -->
+
+    <div class="main">
+
+        <h1>Passport Photo Studio</h1>
+
+        <div class="toolbar">
+
+            <input type="file" id="upload">
+
+            <select id="photoSize">
+                <option>35 x 45 mm</option>
+                <option>2 x 2 inch</option>
+                <option>25 x 35 mm</option>
+            </select>
+
+            <select id="copies">
+                <option>8 Photos</option>
+                <option>16 Photos</option>
+                <option>32 Photos</option>
+            </select>
+
+            <button id="generateBtn">
+                Generate
+            </button>
+
+            <button id="downloadBtn">
+                Download
+            </button>
+
+            <button id="printBtn">
+                Print
+            </button>
+
+        </div>
+
+        <div id="preview">
+
+            <p>No Photo Selected</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/passport.js"></script>
+
+</body>
+
+</html>
