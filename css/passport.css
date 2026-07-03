@@ -89,3 +89,19 @@ body{
     align-items:center;
     border-radius:8px;
 }
+.photoSheet{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    justify-items:center;
+    align-items:center;
+    padding:20px;
+}
+
+.photoSheet img{
+    width:132px;
+    height:170px;
+    object-fit:cover;
+    border:1px solid #999;
+    background:#fff;
+}
