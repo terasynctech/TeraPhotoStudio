@@ -1,6 +1,5 @@
 // =========================================
 // TeraPhotoStudio Passport Module
-// Developed by Terasync Tech
 // =========================================
 
 const upload = document.getElementById("upload");
@@ -21,16 +20,23 @@ upload.addEventListener("change", function () {
         const img = document.createElement("img");
 
         img.src = e.target.result;
+        img.id = "previewImage";
 
         img.style.maxWidth = "350px";
         img.style.maxHeight = "450px";
-        img.style.border = "2px solid #0d6efd";
-        img.style.borderRadius = "8px";
 
         preview.appendChild(img);
 
     };
 
     reader.readAsDataURL(file);
+
+});
+
+// PRINT BUTTON
+
+document.getElementById("printBtn").addEventListener("click", function(){
+
+    window.print();
 
 });
