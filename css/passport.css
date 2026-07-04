@@ -119,3 +119,18 @@ body{
     object-fit:cover;
     border:1px solid #999;
 }
+.photoBox{
+    width:140px;
+    height:180px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border:1px solid #999;
+    overflow:hidden;
+}
+
+.photoBox img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
