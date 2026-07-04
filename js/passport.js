@@ -66,7 +66,42 @@ document.getElementById("generateBtn").onclick = function () {
 
 // Download
 
-document.getElementById("downloadBtn").onclick = function () {
+// ===============================
+// Generate Passport Sheet
+// ===============================
+
+document.getElementById("generateBtn").onclick = function () {
+
+    if (uploadedImage === "") {
+        alert("Please upload a photo first.");
+        return;
+    }
+
+    preview.innerHTML = "";
+
+    const sheet = document.createElement("div");
+    sheet.className = "photoSheet";
+
+    // Get selected background color
+    const bg = document.getElementById("bgColor").value;
+
+    for (let i = 0; i < 8; i++) {
+
+        const box = document.createElement("div");
+        box.className = "photoBox";
+        box.style.background = bg;
+
+        const img = document.createElement("img");
+        img.src = uploadedImage;
+
+        box.appendChild(img);
+        sheet.appendChild(box);
+
+    }
+
+    preview.appendChild(sheet);
+
+};
 
     alert("Download feature will be added in the next step.");
 
