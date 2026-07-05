@@ -1,5 +1,6 @@
 // =========================================
 // TeraPhotoStudio Passport Module
+// Developed by Terasync Tech
 // =========================================
 
 const upload = document.getElementById("upload");
@@ -7,7 +8,10 @@ const preview = document.getElementById("preview");
 
 let uploadedImage = "";
 
-// Upload
+// ===============================
+// Upload Photo
+// ===============================
+
 upload.addEventListener("change", function () {
 
     const file = this.files[0];
@@ -26,6 +30,7 @@ upload.addEventListener("change", function () {
 
         img.src = uploadedImage;
         img.id = "previewImage";
+
         img.style.maxWidth = "350px";
         img.style.maxHeight = "450px";
 
@@ -37,13 +42,19 @@ upload.addEventListener("change", function () {
 
 });
 
-// Generate
 
-document.getElementById("generateBtn").onclick = function () {
+// ===============================
+// Generate Passport Photos
+// ===============================
+
+document.getElementById("generateBtn").addEventListener("click", function () {
 
     if (uploadedImage === "") {
+
         alert("Please upload a photo first.");
+
         return;
+
     }
 
     preview.innerHTML = "";
@@ -51,66 +62,46 @@ document.getElementById("generateBtn").onclick = function () {
     const sheet = document.createElement("div");
     sheet.className = "photoSheet";
 
-    for (let i = 0; i < 8; i++) {
+    const copies = parseInt(document.getElementById("copies").value);
+    const bgColor = document.getElementById("bgColor").value;
 
-        const photo = document.createElement("img");
-        photo.src = uploadedImage;
-
-        sheet.appendChild(photo);
-
-    }
-
-    preview.appendChild(sheet);
-
-};
-
-// Download
-
-// ===============================
-// Generate Passport Sheet
-// ===============================
-
-document.getElementById("generateBtn").onclick = function () {
-
-    if (uploadedImage === "") {
-        alert("Please upload a photo first.");
-        return;
-    }
-
-    preview.innerHTML = "";
-
-    const sheet = document.createElement("div");
-    sheet.className = "photoSheet";
-
-    // Get selected background color
-    const bg = document.getElementById("bgColor").value;
-
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < copies; i++) {
 
         const box = document.createElement("div");
         box.className = "photoBox";
-        box.style.background = bg;
+        box.style.backgroundColor = bgColor;
 
         const img = document.createElement("img");
         img.src = uploadedImage;
 
         box.appendChild(img);
+
         sheet.appendChild(box);
 
     }
 
     preview.appendChild(sheet);
 
-};
+});
 
-    alert("Download feature will be added in the next step.");
 
-};
+// ===============================
+// Download
+// ===============================
 
+document.getElementById("downloadBtn").addEventListener("click", function () {
+
+    alert("Download feature will be implemented in the next step.");
+
+});
+
+
+// ===============================
 // Print
+// ===============================
 
-document.getElementById("printBtn").onclick = function () {
+document.getElementById("printBtn").addEventListener("click", function () {
 
     window.print();
 
-};
+});
