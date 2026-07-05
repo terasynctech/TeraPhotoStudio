@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TeraPhotoStudio - Passport Photo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="css/passport.css">
+    <title>TeraPhotoStudio - Passport Photo</title>
+
+    <link rel="stylesheet" href="css/passport.css">
 
 </head>
 
@@ -14,7 +16,7 @@
 
 <div class="container">
 
-    <!-- Left Sidebar -->
+    <!-- Sidebar -->
 
     <div class="sidebar">
 
@@ -33,48 +35,44 @@
 
     </div>
 
-    <!-- Main Area -->
+    <!-- Main -->
 
     <div class="main">
 
         <h1>Passport Photo Studio</h1>
 
         <div class="toolbar">
-<label>Background</label>
 
-<select id="bgColor">
-    <option value="white">White</option>
-    <option value="#87CEFA">Light Blue</option>
-    <option value="#0D6EFD">Blue</option>
-    <option value="#FF0000">Red</option>
-    <option value="#00AA00">Green</option>
-    <option value="#FFFF99">Cream</option>
-</select>
-            <input type="file" id="upload">
+            <label>Background</label>
+
+            <select id="bgColor">
+                <option value="white">White</option>
+                <option value="#87CEFA">Light Blue</option>
+                <option value="#0D6EFD">Blue</option>
+                <option value="#FF0000">Red</option>
+                <option value="#00AA00">Green</option>
+                <option value="#FFFF99">Cream</option>
+            </select>
+
+            <input type="file" id="upload" accept="image/*">
 
             <select id="photoSize">
-                <option>35 x 45 mm</option>
-                <option>2 x 2 inch</option>
-                <option>25 x 35 mm</option>
+                <option value="35x45">35 × 45 mm</option>
+                <option value="2x2">2 × 2 inch</option>
+                <option value="25x35">25 × 35 mm</option>
             </select>
 
             <select id="copies">
-                <option>8 Photos</option>
-                <option>16 Photos</option>
-                <option>32 Photos</option>
+                <option value="8">8 Photos</option>
+                <option value="16">16 Photos</option>
+                <option value="32">32 Photos</option>
             </select>
 
-            <button id="generateBtn">
-                Generate
-            </button>
+            <button id="generateBtn">Generate</button>
 
-            <button id="downloadBtn">
-                Download
-            </button>
+            <button id="downloadBtn">Download</button>
 
-            <button id="printBtn">
-                Print
-            </button>
+            <button id="printBtn">Print</button>
 
         </div>
 
