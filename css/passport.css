@@ -81,56 +81,56 @@ body{
 }
 
 #preview{
-    height:500px;
+    min-height:550px;
     background:white;
     border:2px dashed #ccc;
+    border-radius:8px;
     display:flex;
     justify-content:center;
     align-items:center;
-    border-radius:8px;
-}
-.photoSheet{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:15px;
-    justify-items:center;
-    align-items:center;
-    padding:20px;
+    overflow:auto;
 }
 
-.photoSheet img{
-    width:132px;
-    height:170px;
-    object-fit:cover;
-    border:1px solid #999;
-    background:#fff;
-}
+/* Passport Sheet */
+
 .photoSheet{
+
     display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:15px;
-    padding:20px;
-    justify-items:center;
+    grid-template-columns:repeat(4,150px);
+    gap:20px;
+
+    justify-content:center;
+
+    padding:30px;
 }
 
-.photoSheet img{
-    width:132px;
-    height:170px;
-    object-fit:cover;
-    border:1px solid #999;
-}
+/* Single Passport Photo */
+
 .photoBox{
+
     width:140px;
     height:180px;
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
-    border:1px solid #999;
+
+    border:1px solid #777;
+
     overflow:hidden;
+
 }
 
+/* Image */
+
 .photoBox img{
-    width:100%;
-    height:100%;
+
+    width:132px;
+
+    height:170px;
+
     object-fit:cover;
+
 }
