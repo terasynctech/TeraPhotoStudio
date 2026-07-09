@@ -1,1 +1,193 @@
+/* ==========================================
+   TeraPhotoStudio Professional
+   PVC Card Module
+========================================== */
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,Arial,sans-serif;
+}
+
+body{
+    background:#eef2f7;
+}
+
+.container{
+    display:flex;
+    height:100vh;
+}
+
+/* Left Panel */
+
+.left-panel{
+
+    width:320px;
+    background:#1f2937;
+    color:#fff;
+
+    padding:25px;
+
+    overflow:auto;
+
+    box-shadow:2px 0 10px rgba(0,0,0,.15);
+
+}
+
+.left-panel h2{
+
+    text-align:center;
+    margin-bottom:25px;
+
+    color:#ffffff;
+
+}
+
+.left-panel label{
+
+    display:block;
+    margin-top:18px;
+    margin-bottom:8px;
+
+    font-weight:600;
+
+}
+
+.left-panel input[type=file]{
+
+    width:100%;
+    padding:8px;
+
+    border-radius:6px;
+    border:none;
+
+    background:#fff;
+    color:#000;
+
+}
+
+.left-panel hr{
+
+    margin:25px 0;
+    border:1px solid rgba(255,255,255,.15);
+
+}
+
+.left-panel button{
+
+    width:100%;
+
+    padding:12px;
+
+    margin-bottom:12px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    transition:.3s;
+
+}
+
+#generateBtn{
+
+    background:#0d6efd;
+    color:white;
+
+}
+
+#generateBtn:hover{
+
+    background:#0b5ed7;
+
+}
+
+#downloadBtn{
+
+    background:#198754;
+    color:white;
+
+}
+
+#downloadBtn:hover{
+
+    background:#157347;
+
+}
+
+#printBtn{
+
+    background:#dc3545;
+    color:white;
+
+}
+
+#printBtn:hover{
+
+    background:#bb2d3b;
+
+}
+
+/* Right Panel */
+
+.right-panel{
+
+    flex:1;
+
+    padding:25px;
+
+    overflow:auto;
+
+}
+
+.right-panel h3{
+
+    margin-bottom:12px;
+    color:#333;
+
+}
+
+.previewBox{
+
+    width:420px;
+    height:260px;
+
+    border:2px dashed #bbb;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+    overflow:hidden;
+
+    border-radius:8px;
+
+}
+
+.previewBox img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
+
+}
+
+canvas{
+
+    display:none;
+
+}
