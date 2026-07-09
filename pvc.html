@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>TeraPhotoStudio - Aadhaar PVC Card</title>
+
+<link rel="stylesheet" href="css/pvc.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="left-panel">
+
+<h2>Aadhaar PVC Card</h2>
+
+<label>Front Scan</label>
+
+<input
+type="file"
+id="frontUpload"
+accept="image/*">
+
+<label>Back Scan</label>
+
+<input
+type="file"
+id="backUpload"
+accept="image/*">
+
+<hr>
+
+<button id="generateBtn">
+Generate PVC
+</button>
+
+<button id="downloadBtn">
+Download
+</button>
+
+<button id="printBtn">
+Print
+</button>
+
+</div>
+
+<div class="right-panel">
+
+<h3>Front Preview</h3>
+
+<div id="frontPreview" class="previewBox">
+
+Select Front Scan
+
+</div>
+
+<h3>Back Preview</h3>
+
+<div id="backPreview" class="previewBox">
+
+Select Back Scan
+
+</div>
+
+</div>
+
+</div>
+
+<canvas
+id="pvcCanvas"
+style="display:none;">
+</canvas>
+
+<script src="js/pvc.js"></script>
+
+</body>
+
+</html>
