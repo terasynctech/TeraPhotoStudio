@@ -1,93 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>TeraPhotoStudio - Passport Photo</title>
-
-    <link rel="stylesheet" href="css/passport.css">
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TeraPhotoStudio - Passport & Visa Photo</title>
+<link rel="stylesheet" href="css/passport.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-
 <body>
+<div class="appShell">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">📸 <span>TeraPhotoStudio</span></a>
+    <nav>
+      <a class="active" href="passport.html">📷 Passport / Visa</a>
+      <a href="pvc.html">💳 PVC Card</a>
+      <a href="index.html">🏠 Dashboard</a>
+    </nav>
+    <div class="sideNote">Professional photo & card printing<br><b>Powered by TeraSyncTech</b></div>
+  </aside>
 
-<div class="container">
-
-    <!-- Sidebar -->
-
-    <div class="sidebar">
-
-        <h2>TeraPhotoStudio</h2>
-
-        <ul>
-
-            <li class="active">📷 Passport Photo</li>
-            <li>🛂 Visa Photo</li>
-            <li>🖼 Stamp Size</li>
-            <li>💳 PVC Card</li>
-            <li>🪪 ID Card</li>
-            <li>⚙ Settings</li>
-
-        </ul>
-
+  <main class="main">
+    <div class="topbar">
+      <div><h1>Passport & Visa Photo Studio</h1><p>Create print-ready A4 sheets in seconds.</p></div>
+      <a class="backBtn" href="index.html">← Dashboard</a>
     </div>
 
-    <!-- Main -->
+    <section class="toolbar">
+      <div class="field"><label for="upload">Photo</label><input type="file" id="upload" accept="image/*"></div>
+      <div class="field"><label for="photoSize">Photo size</label>
+        <select id="photoSize"><option value="35x45">35 × 45 mm</option><option value="2x2">2 × 2 inch</option><option value="25x35">25 × 35 mm</option></select>
+      </div>
+      <div class="field"><label for="copies">Copies</label>
+        <select id="copies"><option value="8">8 Photos</option><option value="16">16 Photos</option><option value="32">32 Photos</option></select>
+      </div>
+      <div class="field"><label for="bgColor">Background</label>
+        <select id="bgColor"><option value="#ffffff">White</option><option value="#87CEFA">Light Blue</option><option value="#0D6EFD">Blue</option><option value="#f5f5dc">Cream</option><option value="#00aa00">Green</option></select>
+      </div>
+      <div class="actions">
+        <button class="primary" id="generateBtn">Generate A4</button>
+        <button class="success" id="downloadBtn">Download PDF</button>
+        <button class="dark" id="printBtn">Print</button>
+      </div>
+    </section>
 
-    <div class="main">
-
-        <h1>Passport Photo Studio</h1>
-
-        <div class="toolbar">
-
-            <label>Background</label>
-
-            <select id="bgColor">
-                <option value="white">White</option>
-                <option value="#87CEFA">Light Blue</option>
-                <option value="#0D6EFD">Blue</option>
-                <option value="#FF0000">Red</option>
-                <option value="#00AA00">Green</option>
-                <option value="#FFFF99">Cream</option>
-            </select>
-
-            <input type="file" id="upload" accept="image/*">
-
-            <select id="photoSize">
-                <option value="35x45">35 × 45 mm</option>
-                <option value="2x2">2 × 2 inch</option>
-                <option value="25x35">25 × 35 mm</option>
-            </select>
-
-            <select id="copies">
-                <option value="8">8 Photos</option>
-                <option value="16">16 Photos</option>
-                <option value="32">32 Photos</option>
-            </select>
-
-            <button id="generateBtn">Generate</button>
-
-            <button id="downloadBtn">Download</button>
-
-            <button id="printBtn">Print</button>
-
-        </div>
-
-        <div id="preview">
-
-            <p>No Photo Selected</p>
-
-        </div>
-
-    </div>
-
+    <div class="helpStrip"><b>Print quality:</b> 300 DPI • A4 210 × 297 mm • Photos are automatically cropped to the selected ratio.</div>
+    <div id="status" class="status" data-type="info">Upload a photo to begin.</div>
+    <section id="preview" class="preview"><p class="empty">Generate a sheet to see the print-ready A4 preview.</p></section>
+  </main>
 </div>
-
 <script src="js/passport.js"></script>
-
 </body>
-
 </html>
