@@ -1,5 +1,5 @@
-TeraPhotoStudio V3
+TeraPhotoStudio V3 FINAL
 
-Important: print and PDF output is generated separately from the dashboard. The A4 passport PDF/print sheet contains photographs only; no TeraSyncTech header, logo, website or dashboard text is included.
+This version uses NO external CropperJS dependency. Upload, crop, background, sheet generation, PDF and print are handled locally in JavaScript.
 
-Open index.html on GitHub Pages. Passport/visa uses Cropper.js CDN. Background replacement is edge-connected color replacement and works best with plain/solid backgrounds.
+Replace the contents of the GitHub Pages repository with all files in this folder.
