@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Passport Photo</title><link rel="stylesheet" href="css/passport.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"></head><body>
+<header class="studioBar"><a href="index.html" class="homeBtn">← Home</a><div><b>Passport / Visa Photo</b><small>Prepare a clean photo-only print sheet</small></div><button id="newBtn" class="outline">New Photo</button></header>
+<main class="work"><section class="controls">
+<div class="step"><span>1</span><label>Select Photo<input id="upload" type="file" accept="image/*"></label></div>
+<div class="step"><span>2</span><button id="cropBtn" class="blue">Crop Photo</button></div>
+<div class="field"><label>Size</label><select id="photoSize"><option value="35x45">35 × 45 mm</option><option value="25x35">25 × 35 mm</option><option value="2x2">2 × 2 inch</option></select></div>
+<div class="field"><label>Copies</label><select id="copies"><option>8</option><option>16</option><option>32</option></select></div>
+<div class="field"><label>Background</label><select id="bgMode"><option value="#ffffff">White</option><option value="#87CEFA">Light Blue</option><option value="#0D6EFD">Blue</option><option value="#ff0000">Red</option><option value="#f5f5dc">Cream</option><option value="#00aa00">Green</option><option value="custom">Custom</option></select></div>
+<div class="field customField"><label>Custom</label><input id="customBg" type="color" value="#ffffff"></div>
+<div class="buttons"><button id="generateBtn" class="green">Generate Sheet</button><button id="downloadBtn" class="blue">PDF</button><button id="printBtn" class="dark">Print Photos</button></div>
+</section>
+<div id="status" class="status">Select a photo to begin.</div>
+<section class="editor"><div class="editorBox"><h3>Photo</h3><div id="photoBox" class="photoBox"><span>No photo selected</span></div><div class="cropActions"><button id="applyCropBtn" class="blue">Apply Crop</button><button id="resetCropBtn" class="outline">Reset Crop</button></div></div><div class="sheetBox"><h3>Print Preview</h3><div id="preview" class="preview"><span>Generate the sheet to preview.</span></div></div></section>
+</main><script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script><script src="js/passport.js"></script></body></html>
