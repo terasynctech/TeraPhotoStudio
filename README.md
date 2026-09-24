@@ -1,24 +1,18 @@
-# TeraPhotoStudio
+# TeraPhotoStudio V3
 
-Professional browser-based photo and card printing utility by TeraSyncTech.
+A browser-only photo and PVC counter tool for GitHub Pages.
 
-## Current build
-- Passport / visa photo sheets
-- 35×45 mm, 25×35 mm and 2×2 inch sizes
-- 8, 16 and 32 copies
-- Automatic aspect-ratio crop
-- Background colour selection
-- 300 DPI A4 print layout
-- Multi-page PDF export when internet/CDN access is available
-- Browser print with A4 print CSS
-- PVC card front/back upload and crop
-- PVC combined JPG export and print
-- Responsive dashboard
+## V3 changes
+- New counter-friendly dashboard
+- Working photo selection and crop workflow
+- Passport sizes: 35x45 mm, 25x35 mm, 2x2 inch
+- 8 / 16 / 32 copies
+- Background options including white, blue, red, custom and original
+- A4 300 DPI output
+- Photo-only Print page: no studio name, logo, header or footer
+- Browser PDF generation with A4 sizing
+- PVC front/back crop and clean A4 output
+- No image upload to a server
 
-## Run
-Open `index.html` in a browser. For GitHub Pages, upload the project as-is.
-
-## Note
-The app processes selected images in the browser. No image is uploaded to a TeraSyncTech server by this code.
-
-© 2026 TeraSyncTech
+## Deploy
+Upload the contents of this folder to the GitHub Pages repository. Keep the folder structure unchanged.
