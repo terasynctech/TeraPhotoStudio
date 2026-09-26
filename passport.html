@@ -18,7 +18,7 @@
 <div class="field"><label>Copies</label><select id="copies"><option value="8">8</option><option value="16">16</option><option value="32">32</option></select></div>
 <div class="field"><label>Background</label><select id="bg"><option value="#ffffff">White</option><option value="#87cefa">Light Blue</option><option value="#0d6efd">Blue</option><option value="#ff0000">Red</option><option value="#f5f5dc">Cream</option><option value="#00aa00">Green</option><option value="custom">Custom</option></select></div>
 <div class="field"><label>Custom</label><input id="custom" type="color" value="#ffffff"></div>
-<button id="generate" class="btn green" type="button">Generate Sheet</button><button id="pdf" class="btn crop" type="button">PDF</button><button id="print" class="btn dark" type="button">Print Photos</button>
+<div class="field"><label>Cutting Border</label><select id="border"><option value="black">Black Thin</option><option value="gray">Gray Thin</option><option value="none">No Border</option></select></div><button id="generate" class="btn green" type="button">Generate Sheet</button><button id="pdf" class="btn crop" type="button">PDF</button><button id="print" class="btn dark" type="button">Print Photos</button>
 </section>
 <div id="status" class="status">Select a photo to begin.</div>
 <section class="layout">
@@ -30,7 +30,7 @@
 'use strict';
 var $=function(id){return document.getElementById(id)};
 var fileInput=$('file'),photoArea=$('photoArea'),emptyHint=$('emptyHint'),cropBox=$('cropBox'),status=$('status'),preview=$('preview'),sizeSelect=$('size'),copiesSelect=$('copies'),bgSelect=$('bg'),customColor=$('custom');
-var sourceImage=null,workingCanvas=null,pages=[],cropMode=false,dragging=false,resizing=false,dragStart=null;
+var sourceImage=null,workingCanvas=null,pages=[],cropMode=false,dragging=false,resizing=false,dragStart=null,borderSelect=$('border');
 function statusMsg(t,type){status.textContent=t;status.className='status'+(type?' '+type:'')}
 function showCanvas(c){var old=photoArea.querySelector('canvas.photoCanvas');if(old)old.remove();var d=document.createElement('canvas');d.className='photoCanvas';d.width=c.width;d.height=c.height;d.getContext('2d').drawImage(c,0,0);photoArea.insertBefore(d,cropBox);emptyHint.style.display='none'}
 function resetCrop(){cropMode=false;cropBox.style.display='none';dragging=false;resizing=false;dragStart=null}
@@ -132,7 +132,7 @@ function makePhoto(){
   x.drawImage(workingCanvas,sx,sy,sw,sh,0,0,base.width,base.height);
   return removePlainBackground(base,bgColor());
 }
-function makePages(photo,count){var W=2480,H=3508,margin=60,gap=24,pw=photo.width,ph=photo.height,pages=[],p,ctx,x,y,rowH;function np(){p=document.createElement('canvas');p.width=W;p.height=H;ctx=p.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);x=margin;y=margin;rowH=0;pages.push(p)}np();for(var i=0;i<count;i++){if(x+pw>W-margin){x=margin;y+=rowH+gap;rowH=0}if(y+ph>H-margin){np()}ctx.drawImage(photo,x,y);x+=pw+gap;rowH=Math.max(rowH,ph)}return pages}
+function makePages(photo,count){var W=2480,H=3508,margin=60,gap=24,pw=photo.width,ph=photo.height,pages=[],p,ctx,x,y,rowH;function np(){p=document.createElement('canvas');p.width=W;p.height=H;ctx=p.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);x=margin;y=margin;rowH=0;pages.push(p)}function drawOne(px,py){ctx.drawImage(photo,px,py);var mode=borderSelect?borderSelect.value:'black';if(mode!=='none'){ctx.save();ctx.strokeStyle=mode==='gray'?'#777':'#000';ctx.lineWidth=2;ctx.strokeRect(px+1,py+1,pw-2,ph-2);ctx.restore()}}np();for(var i=0;i<count;i++){if(x+pw>W-margin){x=margin;y+=rowH+gap;rowH=0}if(y+ph>H-margin){np()}drawOne(x,y);x+=pw+gap;rowH=Math.max(rowH,ph)}return pages}
 $('generate').addEventListener('click',function(){if(!workingCanvas){statusMsg('Select a photo first.','err');return}try{var photo=makePhoto();pages=makePages(photo,parseInt(copiesSelect.value,10));preview.innerHTML='';pages.forEach(function(p,i){var wrap=document.createElement('div');wrap.className='page';var img=document.createElement('img');img.src=p.toDataURL('image/jpeg',.96);wrap.appendChild(img);preview.appendChild(wrap)});statusMsg('A4 sheet generated: '+copiesSelect.value+' photo(s).','ok')}catch(e){console.error(e);statusMsg('Generation error: '+e.message,'err')}});
 function ensurePages(){if(!pages.length)$('generate').click();return pages.length>0}
 $('print').addEventListener('click',function(){if(!ensurePages())return;var w=window.open('','_blank');if(!w){statusMsg('Please allow pop-ups for printing.','err');return}w.document.open();w.document.write('<!doctype html><html><head><title>Photos</title><style>@page{size:A4 portrait;margin:0}html,body{margin:0;padding:0}.p{width:210mm;height:297mm;page-break-after:always}.p:last-child{page-break-after:auto}.p img{width:210mm;height:297mm;display:block}</style></head><body>');pages.forEach(function(p){w.document.write('<div class="p"><img src="'+p.toDataURL('image/jpeg',.98)+'"></div>')});w.document.write('</body></html>');w.document.close();setTimeout(function(){w.focus();w.print()},500)});
@@ -146,7 +146,7 @@ addObj(cat,[ascii('<< /Type /Catalog /Pages '+pgs+' 0 R >>')]);addObj(pgs,[ascii
 $('pdf').addEventListener('click',function(){if(!ensurePages())return;try{var bytes=buildPdf();var blob=new Blob([bytes],{type:'application/pdf'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='passport-photos.pdf';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);statusMsg('PDF generated successfully. Photos only.','ok')}catch(e){console.error(e);statusMsg('PDF error: '+e.message,'err')}});
 function resetAll(){fileInput.value='';sourceImage=null;workingCanvas=null;pages=[];var old=photoArea.querySelector('canvas.photoCanvas');if(old)old.remove();emptyHint.style.display='';preview.innerHTML='<span class="hint">Generate the sheet to preview.</span>';resetCrop();statusMsg('Select a photo to begin.')}
 $('newBtn').addEventListener('click',resetAll);$('reset').addEventListener('click',resetAll);function previewBackground(){if(!workingCanvas)return;try{var p=makePhoto();showCanvas(p);statusMsg('Background applied to the photo. Click Generate Sheet for the A4 sheet.','ok')}catch(e){console.error(e);statusMsg('Background processing error: '+e.message,'err')}}
-bgSelect.addEventListener('change',function(){if(workingCanvas)previewBackground()});customColor.addEventListener('input',function(){if(bgSelect.value==='custom'&&workingCanvas)previewBackground()});
+bgSelect.addEventListener('change',function(){if(workingCanvas)previewBackground()});customColor.addEventListener('input',function(){if(bgSelect.value==='custom'&&workingCanvas)previewBackground()});borderSelect.addEventListener('change',function(){if(pages.length&&workingCanvas){$('generate').click()}else if(workingCanvas){statusMsg('Cutting border set to '+(borderSelect.value==='black'?'Black thin':borderSelect.value==='gray'?'Gray thin':'No border')+'. Click Generate Sheet.','ok')}});
 })();
 </script>
 </body></html>
