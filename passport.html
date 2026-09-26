@@ -95,7 +95,43 @@ sizeSelect.addEventListener('change',function(){
 
 function bgColor(){return bgSelect.value==='custom'?customColor.value:bgSelect.value}
 function photoDims(){var v=sizeSelect.value;if(v==='25x35')return [Math.round(25/25.4*300),Math.round(35/25.4*300)];if(v==='2x2')return [600,600];return [Math.round(35/25.4*300),Math.round(45/25.4*300)]}
-function makePhoto(){if(!workingCanvas)return null;var d=photoDims(),c=document.createElement('canvas');c.width=d[0];c.height=d[1];var x=c.getContext('2d');x.fillStyle=bgColor();x.fillRect(0,0,c.width,c.height);var sr=workingCanvas.width/workingCanvas.height,tr=c.width/c.height,sx=0,sy=0,sw=workingCanvas.width,sh=workingCanvas.height;if(sr>tr){sw=workingCanvas.height*tr;sx=(workingCanvas.width-sw)/2}else{sh=workingCanvas.width/tr;sy=(workingCanvas.height-sh)/2}x.drawImage(workingCanvas,sx,sy,sw,sh,0,0,c.width,c.height);return c}
+
+// Remove a plain/near-plain background by tracing pixels connected to the image edges.
+// This runs on the final photo size, so it is fast enough for a normal browser/GitHub Pages.
+function removePlainBackground(src, replacement){
+  var w=src.width,h=src.height,ctx=src.getContext('2d'),data=ctx.getImageData(0,0,w,h),px=data.data;
+  var samples=[];
+  function sample(x,y){var i=(y*w+x)*4;samples.push([px[i],px[i+1],px[i+2]]);}
+  for(var x=0;x<w;x+=Math.max(1,Math.floor(w/80))){sample(x,0); if(h>2)sample(x,1);}
+  for(var y=0;y<h;y+=Math.max(1,Math.floor(h/80))){sample(0,y); if(w>2)sample(1,y);sample(w-1,y);if(w>2)sample(w-2,y);}
+  samples.sort(function(a,b){return (a[0]+a[1]+a[2])-(b[0]+b[1]+b[2])});
+  var mid=samples[Math.floor(samples.length/2)]||[255,255,255];
+  // Mean a small neighborhood around the median brightness to avoid one dark corner dominating.
+  var ref=[0,0,0],n=0;for(var k=0;k<samples.length;k++){var q=samples[k],bd=Math.abs((q[0]+q[1]+q[2])-(mid[0]+mid[1]+mid[2]));if(bd<45){ref[0]+=q[0];ref[1]+=q[1];ref[2]+=q[2];n++;}}
+  if(n){ref=ref.map(function(v){return v/n})}else ref=mid.slice();
+  var spread=0;for(var j=0;j<samples.length;j++){var z=samples[j];spread+=Math.hypot(z[0]-ref[0],z[1]-ref[1],z[2]-ref[2]);}spread/=Math.max(1,samples.length);
+  var threshold=Math.max(48,Math.min(92,54+spread*0.45));
+  var seen=new Uint8Array(w*h),queue=new Int32Array(w*h),qh=0,qt=0;
+  function seed(x,y){if(x<0||y<0||x>=w||y>=h)return;var id=y*w+x;if(seen[id])return;var i=id*4;var d=Math.hypot(px[i]-ref[0],px[i+1]-ref[1],px[i+2]-ref[2]);if(d<=threshold){seen[id]=1;queue[qt++]=id;}}
+  // Top, left and right edges are the main background seeds; bottom corners are also seeded.
+  for(var x2=0;x2<w;x2+=2){seed(x2,0);if(h>1)seed(x2,1)}
+  for(var y2=0;y2<h;y2+=2){seed(0,y2);seed(1,y2);seed(w-1,y2);seed(w-2,y2)}
+  for(var bx=0;bx<Math.min(20,w);bx++){seed(bx,h-1);seed(w-1-bx,h-1)}
+  function accept(id){var i=id*4;return Math.hypot(px[i]-ref[0],px[i+1]-ref[1],px[i+2]-ref[2])<=threshold}
+  while(qh<qt){var id=queue[qh++],x3=id%w,y3=(id/w)|0;var ns=[id-1,id+1,id-w,id+w];for(var ni=0;ni<4;ni++){var nb=ns[ni];if(nb<0||nb>=w*h||seen[nb])continue;var nx=nb%w,ny=(nb/w)|0;if(Math.abs(nx-x3)+Math.abs(ny-y3)!==1)continue;if(accept(nb)){seen[nb]=1;queue[qt++]=nb}}}
+  var out=document.createElement('canvas');out.width=w;out.height=h;var oc=out.getContext('2d');oc.fillStyle=replacement;oc.fillRect(0,0,w,h);var od=oc.getImageData(0,0,w,h),op=od.data;
+  for(var yy=0;yy<h;yy++){for(var xx=0;xx<w;xx++){var id2=yy*w+xx,ii=id2*4;if(seen[id2]){op[ii]=px[ii];op[ii+1]=px[ii+1];op[ii+2]=px[ii+2];op[ii+3]=0;}else{op[ii]=px[ii];op[ii+1]=px[ii+1];op[ii+2]=px[ii+2];op[ii+3]=255;}}}
+  oc.putImageData(od,0,0);return out;
+}
+function makePhoto(){
+  if(!workingCanvas)return null;
+  var d=photoDims(),base=document.createElement('canvas');base.width=d[0];base.height=d[1];
+  var x=base.getContext('2d');
+  var sr=workingCanvas.width/workingCanvas.height,tr=base.width/base.height,sx=0,sy=0,sw=workingCanvas.width,sh=workingCanvas.height;
+  if(sr>tr){sw=workingCanvas.height*tr;sx=(workingCanvas.width-sw)/2}else{sh=workingCanvas.width/tr;sy=(workingCanvas.height-sh)/2}
+  x.drawImage(workingCanvas,sx,sy,sw,sh,0,0,base.width,base.height);
+  return removePlainBackground(base,bgColor());
+}
 function makePages(photo,count){var W=2480,H=3508,margin=60,gap=24,pw=photo.width,ph=photo.height,pages=[],p,ctx,x,y,rowH;function np(){p=document.createElement('canvas');p.width=W;p.height=H;ctx=p.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);x=margin;y=margin;rowH=0;pages.push(p)}np();for(var i=0;i<count;i++){if(x+pw>W-margin){x=margin;y+=rowH+gap;rowH=0}if(y+ph>H-margin){np()}ctx.drawImage(photo,x,y);x+=pw+gap;rowH=Math.max(rowH,ph)}return pages}
 $('generate').addEventListener('click',function(){if(!workingCanvas){statusMsg('Select a photo first.','err');return}try{var photo=makePhoto();pages=makePages(photo,parseInt(copiesSelect.value,10));preview.innerHTML='';pages.forEach(function(p,i){var wrap=document.createElement('div');wrap.className='page';var img=document.createElement('img');img.src=p.toDataURL('image/jpeg',.96);wrap.appendChild(img);preview.appendChild(wrap)});statusMsg('A4 sheet generated: '+copiesSelect.value+' photo(s).','ok')}catch(e){console.error(e);statusMsg('Generation error: '+e.message,'err')}});
 function ensurePages(){if(!pages.length)$('generate').click();return pages.length>0}
@@ -109,7 +145,8 @@ chunks=[];offsets=[0];pos=0;var cat=1,pgs=2, pageN=[],imgN=[],contN=[];for(var i
 addObj(cat,[ascii('<< /Type /Catalog /Pages '+pgs+' 0 R >>')]);addObj(pgs,[ascii('<< /Type /Pages /Kids ['+pageN.map(function(n){return n+' 0 R'}).join(' ')+'] /Count '+pages.length+' >>')]);pages.forEach(function(p,i){var jpeg=p.toDataURL('image/jpeg',.97),jb=b64Bytes(jpeg),content='q\n595.28 0 0 841.89 0 0 cm\n/Im1 Do\nQ\n',cb=ascii(content);addObj(pageN[i],[ascii('<< /Type /Page /Parent '+pgs+' 0 R /MediaBox [0 0 595.28 841.89] /Resources << /XObject << /Im1 '+imgN[i]+' 0 R >> >> /Contents '+contN[i]+' 0 R >>')]);addObj(imgN[i],[ascii('<< /Type /XObject /Subtype /Image /Width '+p.width+' /Height '+p.height+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+jb.length+' >>\nstream\n'),jb,ascii('\nendstream')]);addObj(contN[i],[ascii('<< /Length '+cb.length+' >>\nstream\n'),cb,ascii('endstream')])});var xref=pos, count=offsets.length, tail='xref\n0 '+count+'\n0000000000 65535 f \n';for(var j=1;j<count;j++)tail+=String(offsets[j]).padStart(10,'0')+' 00000 n \n';tail+='trailer\n<< /Size '+count+' /Root '+cat+' 0 R >>\nstartxref\n'+xref+'\n%%EOF';chunks.push(ascii(tail));return joinBytes(chunks)}
 $('pdf').addEventListener('click',function(){if(!ensurePages())return;try{var bytes=buildPdf();var blob=new Blob([bytes],{type:'application/pdf'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='passport-photos.pdf';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);statusMsg('PDF generated successfully. Photos only.','ok')}catch(e){console.error(e);statusMsg('PDF error: '+e.message,'err')}});
 function resetAll(){fileInput.value='';sourceImage=null;workingCanvas=null;pages=[];var old=photoArea.querySelector('canvas.photoCanvas');if(old)old.remove();emptyHint.style.display='';preview.innerHTML='<span class="hint">Generate the sheet to preview.</span>';resetCrop();statusMsg('Select a photo to begin.')}
-$('newBtn').addEventListener('click',resetAll);$('reset').addEventListener('click',resetAll);bgSelect.addEventListener('change',function(){if(workingCanvas)statusMsg('Background selected. Click Generate Sheet to apply it.','ok')});customColor.addEventListener('input',function(){if(bgSelect.value==='custom'&&workingCanvas)statusMsg('Custom background selected. Click Generate Sheet to apply it.','ok')});
+$('newBtn').addEventListener('click',resetAll);$('reset').addEventListener('click',resetAll);function previewBackground(){if(!workingCanvas)return;try{var p=makePhoto();showCanvas(p);statusMsg('Background applied to the photo. Click Generate Sheet for the A4 sheet.','ok')}catch(e){console.error(e);statusMsg('Background processing error: '+e.message,'err')}}
+bgSelect.addEventListener('change',function(){if(workingCanvas)previewBackground()});customColor.addEventListener('input',function(){if(bgSelect.value==='custom'&&workingCanvas)previewBackground()});
 })();
 </script>
 </body></html>
