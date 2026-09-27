@@ -135,7 +135,26 @@ function makePhoto(){
 function makePages(photo,count){var W=2480,H=3508,margin=60,gap=24,pw=photo.width,ph=photo.height,pages=[],p,ctx,x,y,rowH;function np(){p=document.createElement('canvas');p.width=W;p.height=H;ctx=p.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);x=margin;y=margin;rowH=0;pages.push(p)}function drawOne(px,py){ctx.drawImage(photo,px,py);var mode=borderSelect?borderSelect.value:'black';if(mode!=='none'){ctx.save();ctx.strokeStyle=mode==='gray'?'#777':'#000';ctx.lineWidth=2;ctx.strokeRect(px+1,py+1,pw-2,ph-2);ctx.restore()}}np();for(var i=0;i<count;i++){if(x+pw>W-margin){x=margin;y+=rowH+gap;rowH=0}if(y+ph>H-margin){np()}drawOne(x,y);x+=pw+gap;rowH=Math.max(rowH,ph)}return pages}
 $('generate').addEventListener('click',function(){if(!workingCanvas){statusMsg('Select a photo first.','err');return}try{var photo=makePhoto();pages=makePages(photo,parseInt(copiesSelect.value,10));preview.innerHTML='';pages.forEach(function(p,i){var wrap=document.createElement('div');wrap.className='page';var img=document.createElement('img');img.src=p.toDataURL('image/jpeg',.96);wrap.appendChild(img);preview.appendChild(wrap)});statusMsg('A4 sheet generated: '+copiesSelect.value+' photo(s).','ok')}catch(e){console.error(e);statusMsg('Generation error: '+e.message,'err')}});
 function ensurePages(){if(!pages.length)$('generate').click();return pages.length>0}
-$('print').addEventListener('click',function(){if(!ensurePages())return;var w=window.open('','_blank');if(!w){statusMsg('Please allow pop-ups for printing.','err');return}w.document.open();w.document.write('<!doctype html><html><head><title>Photos</title><style>@page{size:A4 portrait;margin:0}html,body{margin:0;padding:0}.p{width:210mm;height:297mm;page-break-after:always}.p:last-child{page-break-after:auto}.p img{width:210mm;height:297mm;display:block}</style></head><body>');pages.forEach(function(p){w.document.write('<div class="p"><img src="'+p.toDataURL('image/jpeg',.98)+'"></div>')});w.document.write('</body></html>');w.document.close();setTimeout(function(){w.focus();w.print()},500)});
+$('print').addEventListener('click',function(){
+  if(!ensurePages())return;
+  var w=window.open('','_blank');
+  if(!w){statusMsg('Please allow pop-ups for printing.','err');return}
+  w.document.open();
+  w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>TeraPhotoStudio - A4 Photo Print</title><style>'+
+    '@page{size:A4 portrait;margin:0!important;}' +
+    'html,body{margin:0!important;padding:0!important;width:210mm!important;background:#fff;}' +
+    'body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}' +
+    '.p{width:210mm!important;height:297mm!important;margin:0!important;padding:0!important;position:relative;overflow:hidden;page-break-after:always;break-after:page;}' +
+    '.p:last-child{page-break-after:auto;break-after:auto;}' +
+    '.p img{display:block!important;width:210mm!important;height:297mm!important;margin:0!important;padding:0!important;border:0!important;}' +
+    '@media print{html,body{width:210mm!important;height:auto!important;margin:0!important;padding:0!important;} .p{width:210mm!important;height:297mm!important;margin:0!important;padding:0!important;overflow:hidden!important;} .p img{width:210mm!important;height:297mm!important;}}' +
+    '</style></head><body>');
+  pages.forEach(function(p){w.document.write('<div class="p"><img src="'+p.toDataURL('image/jpeg',.98)+'" alt=""></div>')});
+  w.document.write('</body></html>');
+  w.document.close();
+  w.onload=function(){w.focus();setTimeout(function(){w.print()},250)};
+  setTimeout(function(){try{w.focus();w.print()}catch(e){}},800);
+});
 function b64Bytes(data){var s=atob(data.split(',')[1]),a=new Uint8Array(s.length);for(var i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return a}
 function ascii(s){return new TextEncoder().encode(s)}
 function joinBytes(arrs){var n=0;arrs.forEach(function(a){n+=a.length});var o=new Uint8Array(n),p=0;arrs.forEach(function(a){o.set(a,p);p+=a.length});return o}

@@ -1,0 +1,19 @@
+TeraPhotoStudio V3 - Print Update
+
+Passport print page updated for A4 portrait:
+- @page size A4 portrait
+- 0 margins
+- exact 210mm x 297mm page
+- 100% physical image dimensions
+- photo-only output
+- print-color-adjust enabled
+- no header/footer/content from dashboard
+
+Important: Chrome/Windows may still display its own print dialog controls. The website cannot programmatically force the printer driver's proprietary settings. In Chrome print preview, use:
+Paper size: A4
+Margins: None
+Scale: 100
+Destination: Canon G2010
+More settings: Background graphics as needed
+
+For glossy paper, choose the Canon G2010 printer Preferences/Properties and set the appropriate Media Type and High quality.
