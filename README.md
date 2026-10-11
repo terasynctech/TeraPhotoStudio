@@ -16,8 +16,9 @@ Browser-based passport/visa photo sheet and PVC-card workflow. Photo preparation
 
 The app prepares its sheet at approximately 300-DPI A4 dimensions (2480×3508 pixels). Browser JavaScript cannot force the printer driver's media type or quality setting; those must be selected in the printer properties dialog. Actual output also depends on source photo quality, paper and printer settings.
 
-## GitHub Pages link preview
+## Photo selection fix and colourful dashboard\n- The home page now uses a colourful gradient hero and coloured workspace cards.\n- The photo upload control uses a transparent clickable input overlay, rather than `display:none`, to make selecting files more reliable in browsers.\n\n## GitHub Pages link preview
 The page metadata points to `https://terasynctech.github.io/TeraPhotoStudio/assets/teraphotostudio-preview.jpg`. Commit and push the full folder, including the `assets` directory, to the repository's published branch. Social apps may cache previews; use their link-preview debugger/refresh option if an old thumbnail continues to appear.
 
 ## Offline note
 The PDF button currently loads jsPDF from a CDN, so PDF export needs internet unless the library is bundled locally. Core photo sheet generation and browser printing run locally.
+\n\n### If WhatsApp still does not show the preview image\nAfter committing all files, open the image URL directly in a browser and confirm it loads. Social apps may cache link previews, and a GitHub Pages website cannot force WhatsApp to refresh its cache. Test by sending the exact homepage URL to a new chat or use a link-preview debugger where available.\n
