@@ -22,3 +22,6 @@ The page metadata points to `https://terasynctech.github.io/TeraPhotoStudio/asse
 ## Offline note
 The PDF button currently loads jsPDF from a CDN, so PDF export needs internet unless the library is bundled locally. Core photo sheet generation and browser printing run locally.
 \n\n### If WhatsApp still does not show the preview image\nAfter committing all files, open the image URL directly in a browser and confirm it loads. Social apps may cache link previews, and a GitHub Pages website cannot force WhatsApp to refresh its cache. Test by sending the exact homepage URL to a new chat or use a link-preview debugger where available.\n
+
+## Photo upload script fix (12 Oct 2026)
+Replace `passport.html` and the entire `js` folder together. The passport page now loads `js/passport-upload-fix.js` (a new filename) so the browser cannot keep using the older `passport.js` script. After commit, open `passport.html` and press Ctrl+F5. Select a JPG/PNG; the status line should report the photo load result. Do not upload only the JavaScript file.
