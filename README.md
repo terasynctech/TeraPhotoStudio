@@ -25,3 +25,10 @@ The PDF button currently loads jsPDF from a CDN, so PDF export needs internet un
 
 ## Photo upload script fix (12 Oct 2026)
 Replace `passport.html` and the entire `js` folder together. The passport page now loads `js/passport-upload-fix.js` (a new filename) so the browser cannot keep using the older `passport.js` script. After commit, open `passport.html` and press Ctrl+F5. Select a JPG/PNG; the status line should report the photo load result. Do not upload only the JavaScript file.
+
+
+## Professional update (2026-10-30)
+- Added Auto Crop based on selected photo aspect ratio; Manual Crop remains available.
+- Background replacement now uses conservative edge-connected color matching instead of recolouring pixels before testing them. Results still depend on the source background; inspect before printing.
+- A4 landscape sheet layout is fixed to six photos per row at 300 DPI for the 1.5 × 1.2 inch preset.
+- Print dialog guidance updated to A4 landscape / actual size.
