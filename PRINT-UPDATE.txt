@@ -1,19 +1,16 @@
-TeraPhotoStudio V3 - Print Update
+TeraPhotoStudio Professional — Update Notes
 
-Passport print page updated for A4 portrait:
-- @page size A4 portrait
-- 0 margins
-- exact 210mm x 297mm page
-- 100% physical image dimensions
-- photo-only output
-- print-color-adjust enabled
-- no header/footer/content from dashboard
+Passport photo workspace
+- Added 1.5 × 1.2 inch passport preset (450 × 360 pixels at 300 DPI).
+- Default sheet copy counts are now 6, 12, 18, 24, 30, 36, 48 and 60.
+- A4 landscape output is used so six 1.5-inch-wide photos can fit in one horizontal row at true physical size. Portrait A4 cannot fit six 1.5-inch-wide photos across without shrinking them.
+- Border thickness options: Thin 0.5 mm, Medium 1 mm, Thick 3 mm; border can be enabled/disabled and its colour selected.
+- Updated passport page header and workspace styling to a clean blue-and-white professional design.
+- Print and PDF output are set to A4 landscape. Choose A4 Landscape, 100% / Actual Size, and disable browser headers/footers.
+- Existing crop, background, paper-type, print-quality, PDF, and PVC card workspace are retained.
 
-Important: Chrome/Windows may still display its own print dialog controls. The website cannot programmatically force the printer driver's proprietary settings. In Chrome print preview, use:
-Paper size: A4
-Margins: None
-Scale: 100
-Destination: Canon G2010
-More settings: Background graphics as needed
+Important printing note
+The application prepares images at 300-DPI pixel dimensions, but final physical size depends on the browser print scale and printer driver. Use A4 Landscape and 100% / Actual Size. Select the actual paper type and High/Best quality in printer properties. Always test one sheet and measure before production.
 
-For glossy paper, choose the Canon G2010 printer Preferences/Properties and set the appropriate Media Type and High quality.
+Background replacement note
+Background replacement is a basic edge-connected colour replacement, not AI hair/edge segmentation. Inspect hair and shoulder edges before printing client photos.
